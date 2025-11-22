@@ -19,17 +19,16 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install Nuitka
-        run: |
-          pip install -U pip wheel setuptools
-          pip install nuitka
+      - name: Build EXE (folder mode)
+        uses: Nuitka/Nuitka-Action@main
+        with:
+          nuitka-version: main
+          script-name: hello.py
+          mode: standalone   # standalone folder, NOT onefile
 
-      - name: Build EXE with Nuitka
-        run: |
-          python -m nuitka --onefile hello.py
-
-      - name: Upload executable artifact
+      - name: Upload build folder
         uses: actions/upload-artifact@v4
         with:
-          name: hello-exe
-          path: hello.exe
+          name: hello-build
+          path: build/*.dist/**
+          include-hidden-files: true
